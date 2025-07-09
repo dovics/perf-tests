@@ -1,0 +1,8 @@
+generatedConfig*
+*.tgz
+*.tar.gz
+images
+
+cl2-metadata.json
+config.yaml
+deployment.yaml
