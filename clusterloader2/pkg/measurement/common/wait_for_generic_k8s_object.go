@@ -51,7 +51,7 @@ type waitForGenericK8sObjectsMeasurement struct{}
 // More here: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
 // Measurement will timeout if not enough objects have required conditions.
 func (w *waitForGenericK8sObjectsMeasurement) Execute(config *measurement.Config) ([]measurement.Summary, error) {
-	groupVersionResource, err := getGroupVersionResource(config.Params)
+	groupVersionResource, err := GetGroupVersionResource(config.Params)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (*waitForGenericK8sObjectsMeasurement) String() string {
 	return waitForGenericK8sObjectsMeasurementName
 }
 
-func getGroupVersionResource(params map[string]interface{}) (schema.GroupVersionResource, error) {
+func GetGroupVersionResource(params map[string]interface{}) (schema.GroupVersionResource, error) {
 	group, err := util.GetString(params, "objectGroup")
 	if err != nil {
 		return schema.GroupVersionResource{}, err

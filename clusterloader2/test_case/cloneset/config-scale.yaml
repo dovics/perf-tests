@@ -1,0 +1,71 @@
+name: test
+
+namespace:
+  number: 5
+
+tuningSets:
+- name: Uniform1qps
+  qpsLoad:
+    qps: 1
+
+steps:
+- name: Start Wait Measurements
+  measurements:
+  - Identifier: WaitForControlledPodsRunning
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: start
+      apiVersion: apps.kruise.io/v1alpha1
+      kind: CloneSet
+      labelSelector: group = test-cloneset
+      operationTimeout: 120s
+- name: Create CloneSet
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 5
+    replicasPerNamespace: 10
+    tuningSet: Uniform1qps
+    objectBundle:
+    - basename: test-cloneset
+      objectTemplatePath: "cloneset.yaml"
+      templateFillMap:
+        Replicas: 1
+- name: Wait for pods to be running
+  measurements:
+  - Identifier: WaitForControlledPodsRunning
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: gather
+- name: Start Latency Measurements
+  measurements:
+  - Identifier: PodStartupLatency
+    Method: PodStartupLatency
+    Params:
+      action: start
+      labelSelector: group = test-pod
+      threshold: 20s
+- name: Scale CloneSet
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 5
+    replicasPerNamespace: 10
+    tuningSet: Uniform1qps
+    objectBundle:
+    - basename: test-cloneset
+      objectTemplatePath: "cloneset.yaml"
+      templateFillMap:
+        Replicas: 20
+- name: Wait for pods to be running
+  measurements:
+  - Identifier: WaitForControlledPodsRunning
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: gather
+- name: Measure pod startup latency
+  measurements:
+  - Identifier: PodStartupLatency
+    Method: PodStartupLatency
+    Params:
+      action: gather

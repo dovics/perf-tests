@@ -1,0 +1,25 @@
+apiVersion: apps.kruise.io/v1alpha1
+kind: CloneSet
+metadata:
+  labels:
+    group: test-cloneset
+  name: {{.Name}}
+spec:
+  replicas: {{.Replicas}}
+  selector:
+    matchLabels:
+      group: test-pod
+  template:
+    metadata:
+      labels:
+        group: test-pod
+    spec:
+      containers:
+      - image: registry.k8s.io/pause:3.9
+        name: {{.Name}}
+      tolerations:
+      - key: kwok.x-k8s.io/node
+        effect: NoSchedule
+        operator: Exists
+      nodeSelector:
+        type: kwok

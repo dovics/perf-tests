@@ -6,3 +6,4 @@ images
 cl2-metadata.json
 config.yaml
 deployment.yaml
+*log
