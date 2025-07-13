@@ -121,8 +121,8 @@ func (k *kruiseLatencyMeasurement) getKruiseLatency(c clientset.Interface) ([]me
 	return []measurement.Summary{summary}, nil
 }
 
-func (k *kruiseLatencyMeasurement) setQuantiles(metrics kruiseLatencyMetrics) (kuriseMetrics, error) {
-	result := kuriseMetrics{
+func (k *kruiseLatencyMeasurement) setQuantiles(metrics kruiseLatencyMetrics) (kruiseMetrics, error) {
+	result := kruiseMetrics{
 		Latency: make(map[string]*measurementutil.LatencyMetric),
 		Total:   make(map[string]int64),
 	}
@@ -227,7 +227,7 @@ func (k *kruiseLatencyMeasurement) sendRequestToKuriseController(c clientset.Int
 	return responseText, nil
 }
 
-type kuriseMetrics struct {
+type kruiseMetrics struct {
 	Latency map[string]*measurementutil.LatencyMetric `json:"reconcileLatency"`
 	Total   map[string]int64                          `json:"reconcileTotal"`
 }

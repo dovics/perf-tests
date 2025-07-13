@@ -1,0 +1,18 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: cron-scaledobject-{{.Name}}
+spec:
+  scaleTargetRef:
+    apiVersion: apps.kruise.io/v1alpha1
+    kind: CloneSet
+    name: {{.Name}}
+  minReplicaCount: 0
+  cooldownPeriod: 0
+  triggers:
+  - type: cron
+    metadata:
+      timezone: Asia/Shanghai
+      start: "*/2 * * * *"
+      end: "*/4 * * * *"
+      desiredReplicas: "10"

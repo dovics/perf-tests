@@ -40,3 +40,6 @@ $KUBECTL apply -f "$SCRIPT_DIR/kwok-stage-fast.yaml"
 for ((i=0; i<KWOK_NODE_COUNT; i++)); do
   sed "s/#num#/$i/g" "$SCRIPT_DIR/kwok-node.yaml" | kubectl apply -f -
 done
+
+helm install keda kedacore/keda --namespace keda --create-namespace
+helm install kruise openkruise/kruise --version 1.8.0 --set  manager.image.repository=openkruise-registry.cn-shanghai.cr.aliyuncs.com/openkruise/kruise-manager
